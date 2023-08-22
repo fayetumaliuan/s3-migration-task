@@ -45,11 +45,15 @@ After this step, the environment and configuration is complete.
 
 How to run migration-tool.py
 
-This python script lists all objects in a legacy bucket, copies object to the new bucket, updates the database for the new path, and deletes the object from the old path. 
+This python script lists all objects in a legacy bucket, copies object to the new bucket, updates the database for the new path, and deletes the object from the old path using parallel execution. 
 
 In case the job fails in any of these steps, the python file can be ran again since the old path/object is only deleted once this whole process is completed. If the job fails, all the remaining objects in the old path can be re-ran until all objects are moved and deleted from the old path. 
 
 a. Change applicable variables in lines 14-24
+
 b. Run python file as is, without paramaters
 
 
+For 2000 files:
+Execution time: 21.103289127349854 seconds (w/o concurrent threads)
+Execution time: 13.67851185798645 seconds (w/ concurrent threads)
