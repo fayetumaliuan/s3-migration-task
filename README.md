@@ -82,14 +82,17 @@ After this step, the environment and configuration is complete.
 
 This python script lists all objects in a legacy bucket, copies object to the new bucket, updates the database for the new path, and deletes the object from the old path using parallel execution. 
 
+Before running the migration tool (all images under the legacy bucket under image folder):
 ![Before running the migration tool (all images under the legacy bucket under image folder)](image.png)
 
+After running the migration tool (all images under the production bucket under avatar folder):
 ![After running the migration tool (all images under the production bucket under avatar folder)](image-1.png)
 
+The database is updated to the new path locations as well:
 ![The database is updated to the new path locations as well](image-2.png)
 
 
-> In case the job fails in any of these steps, the python file can be ran again since the old path/object is only deleted once this whole process is completed. If > the job fails, all the remaining objects in the old path can be re-ran until all objects are moved and deleted from the old path. 
+> In case the job fails in any of these steps, the python file can be ran again since the old path/object is only deleted once this whole process is completed. If the job fails, all the remaining objects in the old path can be re-ran until all objects are moved and deleted from the old path. 
 
 How to run migration-tool.py
 
@@ -99,7 +102,7 @@ a. Install needed python modules:
 
 b. Change applicable variables in lines 82-89 if needed
 
-c. Run python file with parameters, the following arguments are required: db_user, db_pw, aws_key, aws_secret
+c. Run python file with parameters, the following arguments are required: db_user (Postgres User), db_pw (Postgres Password), aws_key (AWS key), aws_secret (AWS secret)
 
 
 ### 6. Deployment plan
