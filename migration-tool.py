@@ -12,20 +12,6 @@ import time
 import concurrent.futures
 import csv
 
-
-# Env variables for script configuration
-DB_CONN_STRING = os.getenv('DB_CONN_STRING', 'postgres://migrateuserrw:migrate101@127.0.0.1/proddatabase')
-
-# S3 bucket names to use
-S3_BUCKET_NAME_LEGACY = os.getenv('S3_BUCKET_NAME', 'legacy-s3')
-S3_BUCKET_NAME_PROD = os.getenv('S3_BUCKET_NAME_PROD', 'production-s3')
-
-# S3 connection details
-S3_ENDPOINT_URL = os.getenv('S3_ENDPOINT_URL', 'http://localhost:9000')
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', 'minioadmin')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', 'minioadmin')
-AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION', 'us-east-1')
-
 allobjects_fname = 'allobjects.csv'
 completedobjects_fname = 'completedobjects.csv'
 
@@ -80,8 +66,27 @@ def copy_s3_objects(conn, s3, legacybucket, prodbucket,obj):
         sys.exit(1)
     
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='This script seeds the database user, password and AWS key and secret.')
+    parser.add_argument('db_user', type=str, help='Postgres User')
+    parser.add_argument('db_pw', type=str, help='Postgres Password')
+    parser.add_argument('aws_key', type=str, help='AWS key')
+    parser.add_argument('aws_secret', type=str, help='AWS secret')
+    args = parser.parse_args()
     # get the start time
     st = time.time()
+    
+    # Env variables for script configuration
+    DB_CONN_STRING = os.getenv('DB_CONN_STRING', 'postgres://'+ args.db_user + ':' + args.db_pw + '@127.0.0.1/proddatabase')
+
+    # S3 bucket names to use
+    S3_BUCKET_NAME_LEGACY = os.getenv('S3_BUCKET_NAME', 'legacy-s3')
+    S3_BUCKET_NAME_PROD = os.getenv('S3_BUCKET_NAME_PROD', 'production-s3')
+
+    # S3 connection details
+    S3_ENDPOINT_URL = os.getenv('S3_ENDPOINT_URL', 'http://localhost:9000')
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', args.aws_key)
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', args.aws_secret)
+    AWS_DEFAULT_REGION = os.getenv('AWS_DEFAULT_REGION', 'us-east-1')
 
     # Connect to db
     try:
