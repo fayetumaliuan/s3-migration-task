@@ -1,0 +1,5 @@
+
+--UPDATE avatars SET path = REGEXP_REPLACE(path, 'avatar/*', 'image/')
+--DELETE FROM avatars
+SELECT * from avatars order by id
+
